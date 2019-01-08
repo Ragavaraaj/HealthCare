@@ -1,0 +1,19 @@
+{
+  "name": "wssserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "ragav",
+  "license": "ISC",
+  "dependencies": {
+    "mysql": "^2.16.0",
+    "openode": "^1.9.0",
+    "sockjs": "^0.3.19",
+    "websocket": "^1.0.28",
+    "ws": "^6.1.2"
+  }
+}

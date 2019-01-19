@@ -74,10 +74,8 @@ wsServer.on('request', function(request) {
         connection.sendUTF( JSON.stringify({ type:'color', data: userColor }));
         console.log((new Date()) + ' User is known as: ' + userName + ' with ' + userColor + ' color.');
       } else{
-
-        connection.sendUTF( JSON.stringify({ type:'color', data: userColor }));
-        console.log((new Date()) + ' User is known as: ' + userName + ' with ' + userColor + ' color.');
-
+        connection.sendUTF("ok");
+        console.log(message);
       }
     }
   });

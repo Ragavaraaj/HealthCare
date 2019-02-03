@@ -35,12 +35,17 @@ wsServer.on('request',function(req){
     connection.on('message',function(message){
         let sensorVal = JSON.parse(message.utf8Data);
         let now = new Date();
-        let sql = "INSERT INTO bed1 (date,heartrate,temp,vibration) VALUES ('" + date.format(now,'YYYY-MM-DD HH:mm:ss') + "'," + sensorVal.s1 + "," + sensorVal.s2 + "," +sensorVal.s3+ ")";
-        mysqlConnection.query(sql, function (err, result) {
-            if (err) throw err;
-            console.log("added " + sensorVal.s1 + "  " + sensorVal.s2 + "   " + sensorVal.s3 );
-        });
-        connection.sendUTF("ok");
+        if(sensorVal.messageType == "val"){
+            let sql = "INSERT INTO bed1 (date,heartrate,temp,vibration) VALUES ('" + date.format(now,'YYYY-MM-DD HH:mm:ss') + "'," + sensorVal.s1 + "," + sensorVal.s2 + "," +sensorVal.s3+ ")";
+            mysqlConnection.query(sql, function (err, result) {
+                if (err) throw err;
+                console.log("added " + sensorVal.s1 + "  " + sensorVal.s2 + "   " + sensorVal.s3 );
+            });
+            connection.sendUTF("ok");
+        }
+        else{
+            console.log()
+        }
     });
 
     connection.on('close',function(conn){

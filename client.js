@@ -49,11 +49,11 @@ client.on('connect', function(connection) {
 });
 
 
-client.connect('ws://192.168.28.104:9000');
+//client.connect('ws://192.168.28.104:9000');
 
  
 
-// setTimeout(function(){
-//                 client.connect('ws://192.168.28.104:9000')
-//             }
-//             ,5000);
+setTimeout(function(){
+                client.connect('ws://192.168.28.104:9000')
+            }
+            ,5000);

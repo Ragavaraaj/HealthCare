@@ -147,8 +147,8 @@ void setup() {
     delay(1000);
   }
 
-  const char* ssid     = "DHURAIRAJ";
-  const char* password = "9884317582";
+  const char* ssid     = "ssid";
+  const char* password = "pass";
 
   WiFi.begin(ssid, password); 
   while (WiFi.status() != WL_CONNECTED) {

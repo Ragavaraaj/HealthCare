@@ -54,6 +54,6 @@ client.on('connect', function(connection) {
  
 
 setTimeout(function(){
-                client.connect('ws://192.168.28.104:9000')
+                client.connect('ws:// ip address of nodemcu :9000')
             }
             ,5000);

@@ -55,5 +55,4 @@ client.on('connect', function(connection) {
 
 setTimeout(function(){
                 client.connect('ws:// ip address of nodemcu :9000')
-            }
-            ,5000);
+            },5000);

@@ -1,7 +1,6 @@
 var WebSocketClient = require('websocket').client;
 let mysql = require('mysql');
-let date = require('date-and-time');
-
+var moment = require('moment');
 
 var client = new WebSocketClient();
 
@@ -22,7 +21,9 @@ client.on('connectFailed', function(error) {
 });
  
 client.on('connect', function(connection) {
-    console.log('WebSocket Client Connected');
+    let last = moment(new Date(),'YYYY-MM-DD HH:mm:ss');
+    console.log('WebSocket Client Connected at ' + last.toString());
+    let bpm = 0;
     connection.on('error', function(error) {
         console.log("Connection Error: " + error.toString());
     });
@@ -32,27 +33,35 @@ client.on('connect', function(connection) {
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
             let sensorVal = JSON.parse(message.utf8Data);
-            let now = new Date();
+            let now = moment(new Date(),'YYYY-MM-DD HH:mm:ss');
             if(sensorVal.messageType == "val"){
-                let sql = "INSERT INTO bed1 (date,heartrate,temp,vibration) VALUES ('" + date.format(now,'YYYY-MM-DD HH:mm:ss') + "'," + sensorVal.s1 + "," + sensorVal.s2 + "," +sensorVal.s3+ ")";
-                mysqlConnection.query(sql, function (err, result) {
-                    if (err) throw err;
-                    console.log("added " + sensorVal.s1 + "  " + sensorVal.s2 + "   " + sensorVal.s3 );
-                });
-                connection.sendUTF("ok");
+                if(now.minute() - last.minute() == 1 && now.second() - last.second() == 0){
+                    last = now;
+                    let sql = "INSERT INTO bed1 (date,heartrate,temp,vibration) VALUES ('" + now.toString() + "'," + bpm + "," + sensorVal.s2 + "," +sensorVal.s3+ ")";
+                    mysqlConnection.query(sql, function (err, result) {
+                        if (err) throw err;
+                        console.log("added " + bpm + "  " + sensorVal.s2 + "   " + sensorVal.s3 );
+                        bpm = 0;
+                    });
+                    connection.sendUTF("ok");
+                }
+                else
+                {
+                    if(sensorVal.s1>550){
+                        console.log(sensorVal.s1);
+                        bpm+=1;
+                        console.log(bpm);
+                    }
+                }
             }
-            else{
-                console.log(message);
-            }
+        }
+        else{
+            console.log(message);
         }
     });
 });
 
 
-//client.connect('ws://192.168.28.104:9000');
-
- 
-
 setTimeout(function(){
-                client.connect('ws:// ip address of nodemcu :9000')
-            },5000);
+                client.connect('ws://192.168.28.104:9000')
+            },1000);
